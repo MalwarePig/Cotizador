@@ -1,0 +1,238 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="x-ua-compatible" content="ie=edge">
+    <title>
+        GEMAK
+    </title>
+    <meta name="description" content="">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <%- include ('../partials/head.html') %>
+        <!------incluir cabezera navegacion----->
+        <script type="text/javascript" src="http://ajax.googleapis.com/ajax/libs/jquery/1.4/jquery.min.js"></script>
+
+        <script type="text/javascript" src="js/Compras/RFQ.js"></script>
+</head>
+
+<body>
+    <%- include ('../partials/navegacion.html') %>
+        <!------incluir navegacion Menu----->
+
+        <div class="card text-center">
+            <div class="card-header">
+                <!------------------------------ Formulario -------------------------------------->
+                <div class="container shadow-lg p-3 mb-5 bg-white rounded">
+                    <form id="RegistroSalida" name="RegistroSalida">
+                        <div class="form-row">
+
+                            <div class="form-group col-md-3">
+                                <label for="recipient-name" class="font-weight-label">Fecha de registro:</label>
+                                <input type="date" class="form-control" id="N_FechaRegistro">
+                            </div>
+
+                            <div class="form-group col-md-4">
+                                <label for="inputAddress" class="font-weight-label">Responsable</label>
+                                <input required type="text" id="Producto" class="form-control text-dark"
+                                    placeholder="Nombre..." name="Sal_Herramienta" autocomplete="off" required>
+                            </div>
+
+                            <div class="form-group col-md-3">
+                                <label for="inputAddress2" class="font-weight-label">Fólio</label>
+                                <input required type="text" id="Ubicacion" class="form-control" placeholder="Req-00000"
+                                    name="Sal_Ubicación" autocomplete="off" readonly required>
+                            </div>
+                        </div>
+                        <hr>
+                        <div class="form-row">
+
+                            <div class="form-group col-md-3">
+                                <label for="inputAddress2" class="font-weight-label">Código</label>
+                                <input type="text" id="OT" class="form-control" name="Sal_OT" autocomplete="off">
+                            </div>
+
+                            <div class="form-group col-md-2">
+                                <label for="inputAddress2" class="font-weight-label">Cantidad</label>
+                                <input type="number" id="cantidad" class="form-control solo-numero" name="Sal_Cantidad"
+                                    autocomplete="off" required>
+                            </div>
+
+                            <div class="form-group col-md-2">
+                                <label for="inputAddress2" class="font-weight-label">Unidad</label>
+                                <input type="text" id="cantidad" class="form-control solo-numero" name="Sal_Cantidad"
+                                    autocomplete="off" required>
+                            </div>
+
+                            <div class="form-group col-md-5">
+                                <label for="inputAddress2" class="font-weight-label">Description</label>
+                                <input type="text" id="OT" class="form-control" name="Sal_OT" autocomplete="off"
+                                    required>
+                            </div>
+                        </div>
+                        <hr>
+                        <div class="form-row">
+                            <div class="form-group col-md-2">
+                                <label for="inputState" class="font-weight-label">Estatus</label>
+                                <select required id="Estatus" name="Sal_Estatus" class="form-control">
+                                    <option selected>Abierta</option>
+                                    <option selected>Espera</option>
+                                    <option selected>Cerrada</option>
+                                </select>
+                            </div>
+
+                            <div class="form-group col-md-2">
+                                <label for="inputState" class="font-weight-label">Estado</label>
+                                <select required id="Estado" name="Sal_Estado" class="form-control">
+                                    <option value="Nuevo" selected>Nuevo</option>
+                                    <option value="Usado" selected>Usado</option>
+                                </select>
+                            </div>
+
+                            <div class="form-group col-md-1">
+                                <label for="inputState" class="font-weight-label">Estado</label>
+                                <select required id="Estado" name="Sal_Estado" class="form-control">
+                                    <option value="Moneda" selected disabled>Moneda</option>
+                                    <option value="MXN"  >MXN</option>
+                                    <option value="USD"  >USD</option>
+                                </select>
+                            </div>
+
+                            <div class="form-group col-md-2">
+                                <label for="inputAddress2" class="font-weight-label">Precio</label>
+                                <input type="text" id="OT" class="form-control" name="Sal_OT" autocomplete="off"
+                                    required>
+                            </div>
+
+                            <div class="form-group col-md-5">
+                                <label for="inputAddress2" class="font-weight-label">Nota</label>
+                                <input type="text" id="OT" class="form-control" name="Sal_OT" autocomplete="off"
+                                    required>
+                            </div>
+
+                        </div>
+                         
+
+                    </form>
+                    <button type="submit" class="btn btn-secondary" onclick="CrearNota()"> <i
+                            class="fas fa-plus-square"></i> Agregar</button>
+
+                </div>
+
+
+            </div>
+            <div class="card-body">
+                <!------------------------------ TABLA -------------------------------------->
+
+                <div class="container-fluid shadow-lg p-3 mb-5 bg-white rounded">
+                    <table class="table table-condensed table-hover" id="Almacen">
+                        <thead class="thead-dark">
+                            <tr>
+                                <th>Folio</th>
+                                <th>Producto</th>
+                                <th>Cantidad</th>
+                                <th>Estado</th>
+                                <th>OT</th>
+                                <th>Estatus</th>
+                                <th>Maquina</th>
+                                <th>Empleado</th>
+                                <th>Parcialidad</th>
+                                <th>Comentario</th>
+                                <th>Acción</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+
+                        </tbody>
+                    </table>
+                    <br><br>
+                    <hr />
+                    <button type="button" class="btn btn-secondary" onclick="GuardarNota()" data-target="#exampleModal"
+                        data-toggle="modal"> <i class="fas fa-file-download"></i> Imprimir</button>
+                </div>
+            </div>
+        </div>
+
+        <!-- Modal Nota -->
+        <div class="modal fade" id="exampleModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel"
+            aria-hidden="true">
+            <div class="modal-dialog" role="document">
+                <div class="modal-content">
+                    <div class="modal-body">
+                        Nota creada correctamente
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-secondary" data-dismiss="modal"
+                            onclick="Folios()">Close</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!--ModalRecoleccion-->
+        <div class="modal fade bd-example-modal-lg" id="ModalRecoleccion" tabindex="-1" role="dialog"
+            aria-labelledby="myLargeModalLabel" aria-hidden="true">
+            <div class="modal-dialog modal-lg">
+                <div class="modal-content">
+                    <div id="Nota" class="list-group">
+                        <!------------------------------ TABLA-------------------------------------->
+                        <div class="container-fluid shadow-lg p-3 mb-5 bg-white rounded">
+                            <table class=" table table-bordered table-hover" id="TablaRecoleccion">
+                                <thead>
+                                    <tr>
+                                        <th>Id</th>
+                                        <th>Producto</th>
+                                        <th>Cantidad</th>
+                                        <th>Planta</th>
+                                        <th>Recolectar</th>
+                                    </tr>
+                                </thead>
+                                <tbody id="CuerpoNota">
+
+                                </tbody>
+                            </table>
+
+                            <br><br>
+                            <hr />
+                            <button type="button" class="btn btn-secondary" data-dismiss="modal" onclick="Recolectar()"
+                                data-target="#RecoleccionExito" data-toggle="modal">Registrar</button>
+                        </div>
+                        <!-- <a class="list-group-item list-group-item-action"> Item 1</a>-->
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Modal Sin elementos -->
+        <div class="modal fade" id="Vacio" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel"
+            aria-hidden="true">
+            <div class="modal-dialog" role="document">
+                <div class="modal-content">
+                    <div class="modal-body">
+                        No se encontraron elementos con ese nombre.
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-secondary" data-dismiss="modal"
+                            onclick="Folios()">Close</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Modal Sin elementos -->
+        <div class="modal fade" id="RecoleccionExito" tabindex="-1" role="dialog" aria-labelledby="RecoleccionExito"
+            aria-hidden="true">
+            <div class="modal-dialog" role="document">
+                <div class="modal-content">
+                    <div class="modal-body">
+                        Recolección exitosa.
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-secondary" data-dismiss="modal"
+                            onclick="Folios()">Close</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+</body>

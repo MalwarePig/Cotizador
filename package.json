@@ -1,0 +1,31 @@
+{
+  "name": "cotizador",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "start": "node src",
+    "dev": "nodemon src"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "dependencies": {
+    "ejs": "^3.1.6",
+    "express": "^4.17.1",
+    "express-fileupload": "^1.2.1",
+    "express-handlebars": "^5.3.4",
+    "express-myconnection": "^1.0.4",
+    "express-mysql-session": "^2.1.7",
+    "express-session": "^1.17.2",
+    "express-validator": "^6.13.0",
+    "morgan": "^1.10.0",
+    "mysql": "^2.18.1",
+    "nodemailer": "^6.7.0",
+    "passport": "^0.5.0",
+    "read-excel-file": "^5.2.20"
+  },
+  "devDependencies": {
+    "nodemon": "^2.0.14"
+  }
+}
