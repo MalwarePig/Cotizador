@@ -14,6 +14,10 @@
         <script type="text/javascript" src="http://ajax.googleapis.com/ajax/libs/jquery/1.4/jquery.min.js"></script>
 
         <script type="text/javascript" src="js/Compras/RFQ.js"></script>
+
+        <!-----------------------------------------------     PDF     -------------------------------------------------------------->
+        <script src="js/Recursos/jspdf.min.js"></script>
+        <script src="js/Recursos/jspdf.plugin.autotable.min.js"></script>
 </head>
 
 <body>
@@ -29,92 +33,81 @@
 
                             <div class="form-group col-md-3">
                                 <label for="recipient-name" class="font-weight-label">Fecha de registro:</label>
-                                <input type="date" class="form-control" id="N_FechaRegistro">
+                                <input type="date" class="form-control" id="Fecha">
                             </div>
 
                             <div class="form-group col-md-4">
-                                <label for="inputAddress" class="font-weight-label">Responsable</label>
-                                <input required type="text" id="Producto" class="form-control text-dark"
-                                    placeholder="Nombre..." name="Sal_Herramienta" autocomplete="off" required>
+                                <label for="inputAddress" class="font-weight-label">Atiende</label>
+                                <input required type="text" id="Atiende" class="form-control text-dark"
+                                    placeholder="Nombre..." name="Sal_Herramienta" autocomplete="off">
                             </div>
 
-                            <div class="form-group col-md-3">
+                            <div class="form-group col-md-2">
                                 <label for="inputAddress2" class="font-weight-label">Fólio</label>
-                                <input required type="text" id="Ubicacion" class="form-control" placeholder="Req-00000"
-                                    name="Sal_Ubicación" autocomplete="off" readonly required>
+                                <input required type="text" id="Folio" class="form-control" placeholder="Req-00000"
+                                    name="Sal_Ubicación" autocomplete="off">
+                            </div>
+
+                            <div class="form-group col-md-2">
+                                <label for="inputAddress2" class="font-weight-label">Obra</label>
+                                <input required type="text" id="Obra" class="form-control" placeholder="Proyecto..."
+                                    name="Sal_Ubicación" autocomplete="off">
                             </div>
                         </div>
                         <hr>
                         <div class="form-row">
 
+                            <div class="form-group col-md-2">
+                                <label for="inputAddress2" class="font-weight-label">Unidad</label>
+                                <input type="text" id="Unidad" class="form-control solo-numero" name="Sal_Cantidad"
+                                    autocomplete="off" required>
+                            </div>
+
                             <div class="form-group col-md-3">
-                                <label for="inputAddress2" class="font-weight-label">Código</label>
-                                <input type="text" id="OT" class="form-control" name="Sal_OT" autocomplete="off">
+                                <label for="inputAddress2" class="font-weight-label">Código/Clave</label>
+                                <input type="text" id="Clave" class="form-control" name="Sal_OT" autocomplete="off">
                             </div>
 
                             <div class="form-group col-md-2">
                                 <label for="inputAddress2" class="font-weight-label">Cantidad</label>
-                                <input type="number" id="cantidad" class="form-control solo-numero" name="Sal_Cantidad"
-                                    autocomplete="off" required>
-                            </div>
-
-                            <div class="form-group col-md-2">
-                                <label for="inputAddress2" class="font-weight-label">Unidad</label>
-                                <input type="text" id="cantidad" class="form-control solo-numero" name="Sal_Cantidad"
+                                <input type="number" id="Cantidad" class="form-control solo-numero" name="Sal_Cantidad"
                                     autocomplete="off" required>
                             </div>
 
                             <div class="form-group col-md-5">
-                                <label for="inputAddress2" class="font-weight-label">Description</label>
-                                <input type="text" id="OT" class="form-control" name="Sal_OT" autocomplete="off"
-                                    required>
+                                <label for="inputAddress2" class="font-weight-label">Descripción</label>
+                                <input type="text" id="Descripcion" class="form-control" name="Sal_OT"
+                                    autocomplete="off" required>
                             </div>
                         </div>
                         <hr>
                         <div class="form-row">
-                            <div class="form-group col-md-2">
-                                <label for="inputState" class="font-weight-label">Estatus</label>
-                                <select required id="Estatus" name="Sal_Estatus" class="form-control">
-                                    <option selected>Abierta</option>
-                                    <option selected>Espera</option>
-                                    <option selected>Cerrada</option>
-                                </select>
-                            </div>
 
                             <div class="form-group col-md-2">
-                                <label for="inputState" class="font-weight-label">Estado</label>
-                                <select required id="Estado" name="Sal_Estado" class="form-control">
-                                    <option value="Nuevo" selected>Nuevo</option>
-                                    <option value="Usado" selected>Usado</option>
-                                </select>
+                                <label for="inputAddress2" class="font-weight-label">PU</label>
+                                <input type="text" id="PU" class="form-control" name="Sal_OT" autocomplete="off"
+                                    required>
                             </div>
 
                             <div class="form-group col-md-1">
-                                <label for="inputState" class="font-weight-label">Estado</label>
-                                <select required id="Estado" name="Sal_Estado" class="form-control">
+                                <label for="inputState" class="font-weight-label">Moneda</label>
+                                <select required id="Moneda" name="Sal_Estado" class="form-control">
                                     <option value="Moneda" selected disabled>Moneda</option>
-                                    <option value="MXN"  >MXN</option>
-                                    <option value="USD"  >USD</option>
+                                    <option value="MXN">MXN</option>
+                                    <option value="USD">USD</option>
                                 </select>
                             </div>
 
                             <div class="form-group col-md-2">
-                                <label for="inputAddress2" class="font-weight-label">Precio</label>
-                                <input type="text" id="OT" class="form-control" name="Sal_OT" autocomplete="off"
-                                    required>
+                                <label for="inputAddress2" class="font-weight-label">Descuento</label>
+                                <input type="number" id="Descuento" class="form-control" name="Sal_OT"
+                                    autocomplete="off" required>
                             </div>
-
-                            <div class="form-group col-md-5">
-                                <label for="inputAddress2" class="font-weight-label">Nota</label>
-                                <input type="text" id="OT" class="form-control" name="Sal_OT" autocomplete="off"
-                                    required>
-                            </div>
-
                         </div>
-                         
+
 
                     </form>
-                    <button type="submit" class="btn btn-secondary" onclick="CrearNota()"> <i
+                    <button type="submit" class="btn btn-secondary" onclick="AddNota()"> <i
                             class="fas fa-plus-square"></i> Agregar</button>
 
                 </div>
@@ -125,20 +118,16 @@
                 <!------------------------------ TABLA -------------------------------------->
 
                 <div class="container-fluid shadow-lg p-3 mb-5 bg-white rounded">
-                    <table class="table table-condensed table-hover" id="Almacen">
+                    <table class="table table-condensed table-hover" id="TablaLineas">
                         <thead class="thead-dark">
                             <tr>
-                                <th>Folio</th>
-                                <th>Producto</th>
+                                <th>Unidad</th>
+                                <th>Clave</th>
                                 <th>Cantidad</th>
-                                <th>Estado</th>
-                                <th>OT</th>
-                                <th>Estatus</th>
-                                <th>Maquina</th>
-                                <th>Empleado</th>
-                                <th>Parcialidad</th>
-                                <th>Comentario</th>
-                                <th>Acción</th>
+                                <th>Descripción</th>
+                                <th>PU</th>
+                                <th>Descuento</th>
+                                <th>Eliminar</th>
                             </tr>
                         </thead>
                         <tbody>
@@ -147,8 +136,8 @@
                     </table>
                     <br><br>
                     <hr />
-                    <button type="button" class="btn btn-secondary" onclick="GuardarNota()" data-target="#exampleModal"
-                        data-toggle="modal"> <i class="fas fa-file-download"></i> Imprimir</button>
+                    <button type="button" class="btn btn-secondary" onclick="PDF()">
+                        <i class="fas fa-file-download"></i> Imprimir</button>
                 </div>
             </div>
         </div>
