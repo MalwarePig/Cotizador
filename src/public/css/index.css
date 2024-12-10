@@ -1,0 +1,19 @@
+body {
+    /* background-image: url('../images/wall.webp'); */
+    background-repeat: no-repeat;
+    background-size: cover;
+    background-position: center;
+    background-attachment: fixed;
+}
+
+body::before {
+    content: "";
+    width: 100%;
+    min-height: 100vh;
+    position: absolute;
+    top: 0;
+    left: 0;
+    background: linear-gradient(90deg, rgb(3, 1, 94), rgb(255, 0, 0));
+    opacity: 0.3;
+    z-index: -1;
+}

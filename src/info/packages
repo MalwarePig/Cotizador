@@ -1,0 +1,14 @@
+==================== Librerias necesarias para funicionamiento de la aplicacion ==================== 
+
+express //Manejo del servidor
+express-handlebars //Manejo o motor de plantillas
+express-session //Manejo de sesiones
+morgan //Muestra por consola las peticiones get y post
+ejs //Para trabajar con html
+
+npm i express express-handlebars express-session morgan ejs
+
+==================== Librerias para desarrollador ==================== 
+nodemon //Reiniciar servidor al guardar cambios
+
+npm i nodemon -D
