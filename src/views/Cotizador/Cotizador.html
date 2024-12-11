@@ -1,0 +1,175 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>GlaDOS</title>
+
+    <%- include ('../partials/head.html') %>
+        <!-- SheetJS -->
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/xlsx/0.17.0/xlsx.full.min.js"></script>
+
+</head>
+
+<body>
+    <%- include ('../partials/navigation.html') %>
+
+        <div class="container shadow-lg">
+            <div class="card">
+                <div class="card-body ">
+                    <div class="form-inline col-12 ml-5" id="myform">
+                        <!-- Información de cliente -->
+                        <div class="row mb-3">
+                            <div class="col-md-6">
+                                <label for="clientName" class="form-label">Nombre del Cliente</label>
+                                <input type="text" class="form-control" id="clientName" placeholder="Ingrese su nombre"
+                                    required>
+                            </div>
+                            <div class="col-md-6">
+                                <label for="clientEmail" class="form-label">Correo Electrónico</label>
+                                <input type="email" class="form-control" id="clientEmail"
+                                    placeholder="Ingrese su correo electrónico" required>
+                            </div>
+                        </div>
+
+                        <!-- Detalles de la cotización -->
+                        <div class="mb-3">
+                            <label for="product" class="form-label">Producto o Servicio</label>
+                            <select class="form-select" id="product" required>
+                                <option value="">Seleccione un producto o servicio</option>
+                                <option value="producto1">Producto 1</option>
+                                <option value="producto2">Producto 2</option>
+                                <option value="producto3">Producto 3</option>
+                            </select>
+                        </div>
+
+                        <div class="row mb-3">
+                            <div class="col-md-6">
+                                <label for="quantity" class="form-label">Cantidad</label>
+                                <input type="number" class="form-control" id="quantity" placeholder="Cantidad" required
+                                    min="1">
+                            </div>
+                            <div class="col-md-6">
+                                <label for="unitPrice" class="form-label">Precio Unitario</label>
+                                <input type="number" class="form-control" id="unitPrice" placeholder="Precio por unidad"
+                                    required min="0" step="0.01">
+                            </div>
+                        </div>
+
+                        <!-- Fecha estimada de entrega -->
+                        <div class="mb-3">
+                            <label for="deliveryDate" class="form-label">Fecha de Entrega Estimada</label>
+                            <input type="date" class="form-control" id="deliveryDate" required>
+                        </div>
+
+                        <!-- Método de pago -->
+                        <div class="mb-3">
+                            <label for="paymentMethod" class="form-label">Método de Pago</label>
+                            <select class="form-select" id="paymentMethod" required>
+                                <option value="">Seleccione un método de pago</option>
+                                <option value="tarjeta">Tarjeta de Crédito/Débito</option>
+                                <option value="transferencia">Transferencia Bancaria</option>
+                                <option value="efectivo">Efectivo</option>
+                            </select>
+                        </div>
+
+                        <!-- Comentarios adicionales -->
+                        <div class="mb-3">
+                            <label for="comments" class="form-label">Comentarios Adicionales</label>
+                            <textarea class="form-control" id="comments" rows="3"
+                                placeholder="Comentarios adicionales o requisitos especiales"></textarea>
+                        </div>
+
+                        <!-- Botón de envío -->
+                        <button id="download-btn" class="btn btn-primary">Solicitar Cotización</button>
+
+                    </div>
+                </div>
+            </div>
+        </div>
+
+
+        <script>
+            document.getElementById("download-btn").addEventListener("click", function() {
+      // Ruta de la imagen en la carpeta pública
+      const imgUrl = "images/logo.png";  // Ruta relativa a la imagen en la carpeta pública
+
+      // Crear un objeto de imagen
+      const img = new Image();
+      img.src = imgUrl;
+
+      img.onload = function() {
+        // Crear un canvas para convertir la imagen a base64
+        const canvas = document.createElement('canvas');
+        const ctx = canvas.getContext('2d');
+        canvas.width = img.width;
+        canvas.height = img.height;
+        ctx.drawImage(img, 0, 0);
+
+        // Obtener la imagen en formato base64
+        const base64Image = canvas.toDataURL("image/png").split(',')[1]; // Convertir a base64
+
+        // Datos de la cotización
+        const data = [
+          ["Producto", "Cantidad", "Precio Unitario", "Subtotal"],  // Encabezados
+          ["Producto 1", 2, 50, 100],
+          ["Producto 2", 5, 30, 150],
+          ["Producto 3", 3, 20, 60],
+        ];
+
+        // Crear la hoja de trabajo con los datos
+        const ws = XLSX.utils.aoa_to_sheet(data);
+
+        // Estilo para las celdas
+        const headerStyle = {
+          font: { bold: true, size: 12, color: { rgb: "FFFFFF" } },
+          fill: { fgColor: { rgb: "4CAF50" } },
+          alignment: { horizontal: "center", vertical: "center" },
+          border: { top: { style: "thin", color: { rgb: "000000" } },
+                    left: { style: "thin", color: { rgb: "000000" } },
+                    bottom: { style: "thin", color: { rgb: "000000" } },
+                    right: { style: "thin", color: { rgb: "000000" } } }
+        };
+
+        // Aplicar estilo al encabezado
+        for (let i = 0; i < data[0].length; i++) {
+          const cellAddress = { r: 0, c: i };
+          if (!ws[cellAddress]) ws[cellAddress] = {}; 
+          ws[cellAddress].s = headerStyle;
+        }
+
+        // Crear el objeto de la imagen para insertar en el Excel
+        const imageObj = {
+          name: "logo.png",  // Nombre del archivo de la imagen
+          data: base64Image, // Datos de la imagen en base64
+          opts: {
+            origin: { r: 0, c: 0 },  // Posición de la imagen en la celda A1
+            s: { r: 0, c: 0, row: 2, col: 2 }, // Tamaño de la imagen (puedes ajustarlo)
+          }
+        };
+
+        // Agregar la imagen al libro de trabajo
+        const wb = XLSX.utils.book_new();
+        XLSX.utils.book_append_sheet(wb, ws, "Cotización");
+
+        // Agregar la imagen en el archivo Excel
+        if (base64Image) {
+          if (!wb['!images']) wb['!images'] = [];  // Asegurarse de que exista el contenedor de imágenes
+          wb['!images'].push(imageObj);  // Insertar la imagen
+        }
+
+        // Generar y descargar el archivo Excel
+        XLSX.writeFile(wb, "cotizacion_con_imagen_publica.xlsx");
+      };
+
+      img.onerror = function() {
+        alert("Error al cargar la imagen. Asegúrate de que la ruta sea correcta.");
+      };
+    });
+                 
+        </script>
+
+</body>
+
+</html>

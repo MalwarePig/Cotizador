@@ -1,6 +1,7 @@
+$ git config --global user.name "Malwarepig"
+$ git config --global user.email sergio_lcc92@hotmail.com
+
 …or create a new repository on the command line
-
-
 git init
 git add .
 git commit -m "first commit"

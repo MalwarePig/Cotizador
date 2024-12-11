@@ -1,0 +1,176 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Generar Cotización</title>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/exceljs/4.3.0/exceljs.min.js"></script>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 0;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            background-color: #f4f4f4;
+        }
+
+        button {
+            padding: 10px 20px;
+            font-size: 16px;
+            background-color: #4CAF50;
+            color: white;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+        }
+
+        button:hover {
+            background-color: #45a049;
+        }
+    </style>
+</head>
+
+<body>
+    <div style="text-align: center; margin-top: 20px;">
+        <button onclick="crearCotizacionExcel()">
+            Generar Cotización
+        </button>
+    </div>
+
+    <script>
+        async function crearCotizacionExcel() {
+            const workbook = new ExcelJS.Workbook();
+
+            // Cargar imagen del logo
+            const response = await fetch('images/logo.png'); // Ruta a la imagen en carpeta pública
+            const imageBlob = await response.blob();
+            const arrayBuffer = await imageBlob.arrayBuffer();
+
+            // Agregar imagen al libro de Excel
+            const logoId = workbook.addImage({
+                buffer: arrayBuffer,
+                extension: 'png'
+            });
+
+            // Hoja 1: Cotización
+            const hojaCotizacion = workbook.addWorksheet('Cotización');
+            hojaCotizacion.properties.defaultRowHeight = 20;
+
+            hojaCotizacion.addImage(logoId, {
+                tl: { col: 0, row: 0 },
+                ext: { width: 150, height: 150 }
+            });
+
+            // Título de la cotización
+            hojaCotizacion.mergeCells('A4:E4');
+            hojaCotizacion.getCell('A4').value = 'Título de Cotización';
+            hojaCotizacion.getCell('A4').alignment = { horizontal: 'center', vertical: 'middle' };//Formato de celda
+            hojaCotizacion.getCell('A4').font = { bold: true, size: 16 };//Formato de texto
+            hojaCotizacion.getCell('A4').fill = {
+                type: 'pattern',
+                pattern: 'solid',
+                fgColor: { argb: 'FF4CAF50' }
+            };
+
+            // Encabezados de tabla [Label,data,ancho]
+            /*  hojaCotizacion.columns = [
+                 { header: '#', key: 'num', width: 5 },
+                 { header: 'Descripción', key: 'desc', width: 30 },
+                 { header: 'Cantidad', key: 'qty', width: 10 },
+                 { header: 'Precio Unitario', key: 'unitPrice', width: 15 },
+                 { header: 'Total', key: 'total', width: 15 }
+             ]; */
+
+            var idCol = hojaCotizacion.getCell('J6')
+            idCol.header = '#'
+            idCol.width = 5;
+            idCol.key = 'num'
+
+            console.log(idCol)
+
+            var desc = hojaCotizacion.getRow(4).getColumn(11);
+            desc.header = 'Descripción'
+            desc.width = 30;
+            desc.key = 'desc'
+            console.log(desc)
+
+            var qty = hojaCotizacion.getColumn(12);
+            qty.header = 'Cantidad'
+            qty.width = 10;
+            qty.key = 'qty'
+
+            var unitPrice = hojaCotizacion.getColumn(13);
+            unitPrice.header = 'Precio'
+            unitPrice.width = 15;
+            unitPrice.key = 'unitPrice'
+
+            var total = hojaCotizacion.getColumn(14);
+            total.header = 'Total'
+            total.width = 15;
+            total.key = 'total'
+
+            // Cambiar la posición de los encabezados a partir de la columna G
+           /*  const encabezados = hojaCotizacion.getRow(6); // Fila 6 para los encabezados
+            encabezados.getCell(11).value = '#';
+            encabezados.getCell(12).value = 'Descripción';
+            encabezados.getCell(13).value = 'Cantidad';
+            encabezados.getCell(14).value = 'Precio Unitario';
+            encabezados.getCell(15).value = 'Total';
+ */
+            //Solo da formato de colores
+            /* encabezados.eachCell((cell, colNumber) => {
+                // Desplazamos las celdas de los encabezados a partir de la columna G (columna 7)
+                cell.col = colNumber + 6;
+                cell.font = { bold: true, color: { argb: 'FFFFFFFF' } };
+                cell.alignment = { horizontal: 'center' };
+                cell.fill = {
+                    type: 'pattern',
+                    pattern: 'solid',
+                    fgColor: { argb: 'FF007BFF' }
+                };
+            }); */
+
+            // Datos de la tabla
+            const datos = [
+                { num: 1, desc: 'Producto A', qty: 2, unitPrice: 50, total: 100 },
+                { num: 2, desc: 'Producto B', qty: 1, unitPrice: 75, total: 75 },
+                { num: 3, desc: 'Producto C', qty: 3, unitPrice: 20, total: 60 }
+            ];
+            hojaCotizacion.addRows(datos);
+
+            // Subtotales y totales
+            hojaCotizacion.addRow(['', '', '', 'Subtotal', 235]);
+            hojaCotizacion.addRow(['', '', '', 'IVA (16%)', 37.6]);
+            hojaCotizacion.addRow(['', '', '', 'Total', 272.6]);
+
+            hojaCotizacion.getColumn(5).numFmt = '"$"#,##0.00';
+
+            // Hoja 2: Datos del Cliente
+            const hojaCliente = workbook.addWorksheet('Datos del Cliente');
+            hojaCliente.addRow(['Datos del Cliente']);
+            hojaCliente.addRow(['Nombre', 'Juan Pérez']);
+            hojaCliente.addRow(['Dirección', 'Av. Principal 123']);
+            hojaCliente.addRow(['Teléfono', '123456789']);
+            hojaCliente.addRow(['Correo', 'juan.perez@correo.com']);
+
+            hojaCliente.getColumn(1).width = 15;
+            hojaCliente.getColumn(2).width = 30;
+
+            // Descargar archivo
+            const buffer = await workbook.xlsx.writeBuffer();
+            const blob = new Blob([buffer], { type: 'application/octet-stream' });
+            const url = URL.createObjectURL(blob);
+            const a = document.createElement('a');
+            a.href = url;
+            a.download = 'cotizacion_empresa.xlsx';
+            a.click();
+            URL.revokeObjectURL(url);
+        }
+    </script>
+</body>
+
+</html>

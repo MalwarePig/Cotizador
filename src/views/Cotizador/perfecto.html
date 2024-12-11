@@ -1,0 +1,127 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Generar Cotización</title>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/exceljs/4.3.0/exceljs.min.js"></script>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 0;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            background-color: #f4f4f4;
+        }
+        button {
+            padding: 10px 20px;
+            font-size: 16px;
+            background-color: #4CAF50;
+            color: white;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+        }
+        button:hover {
+            background-color: #45a049;
+        }
+    </style>
+</head>
+<body>
+    <div style="text-align: center; margin-top: 20px;">
+        <button onclick="crearCotizacionExcel()">
+            Generar Cotización
+        </button>
+    </div>
+
+    <script>
+        async function crearCotizacionExcel() {
+            const workbook = new ExcelJS.Workbook();
+
+            // Hoja 1: Cotización
+            const hojaCotizacion = workbook.addWorksheet('Cotización');
+            hojaCotizacion.properties.defaultRowHeight = 20;
+
+            // Agregar logo (Base64)
+            const logoBase64 = 'data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAA...'; // Sustituye con tu Base64
+            const logoId = workbook.addImage({
+                base64: logoBase64,
+                extension: 'png'
+            });
+            hojaCotizacion.addImage(logoId, {
+                tl: { col: 0, row: 0 },
+                ext: { width: 150, height: 70 }
+            });
+
+            // Título de la cotización
+            hojaCotizacion.mergeCells('A4:E4');
+            hojaCotizacion.getCell('A4').value = 'Título de Cotización';
+            hojaCotizacion.getCell('A4').alignment = { horizontal: 'center', vertical: 'middle' };
+            hojaCotizacion.getCell('A4').font = { bold: true, size: 16 };
+            hojaCotizacion.getCell('A4').fill = {
+                type: 'pattern',
+                pattern: 'solid',
+                fgColor: { argb: 'FF4CAF50' }
+            };
+
+            // Encabezados de tabla
+            hojaCotizacion.columns = [
+                { header: '#', key: 'num', width: 5 },
+                { header: 'Descripción', key: 'desc', width: 30 },
+                { header: 'Cantidad', key: 'qty', width: 10 },
+                { header: 'Precio Unitario', key: 'unitPrice', width: 15 },
+                { header: 'Total', key: 'total', width: 15 }
+            ];
+
+            hojaCotizacion.getRow(6).eachCell(cell => {
+                cell.font = { bold: true, color: { argb: 'FFFFFFFF' } };
+                cell.alignment = { horizontal: 'center' };
+                cell.fill = {
+                    type: 'pattern',
+                    pattern: 'solid',
+                    fgColor: { argb: 'FF007BFF' }
+                };
+            });
+
+            // Datos de la tabla
+            const datos = [
+                { num: 1, desc: 'Producto A', qty: 2, unitPrice: 50, total: 100 },
+                { num: 2, desc: 'Producto B', qty: 1, unitPrice: 75, total: 75 },
+                { num: 3, desc: 'Producto C', qty: 3, unitPrice: 20, total: 60 }
+            ];
+            hojaCotizacion.addRows(datos);
+
+            // Subtotales y totales
+            hojaCotizacion.addRow(['', '', '', 'Subtotal', 235]);
+            hojaCotizacion.addRow(['', '', '', 'IVA (16%)', 37.6]);
+            hojaCotizacion.addRow(['', '', '', 'Total', 272.6]);
+
+            hojaCotizacion.getColumn(5).numFmt = '"$"#,##0.00';
+
+            // Hoja 2: Datos del Cliente
+            const hojaCliente = workbook.addWorksheet('Datos del Cliente');
+            hojaCliente.addRow(['Datos del Cliente']);
+            hojaCliente.addRow(['Nombre', 'Juan Pérez']);
+            hojaCliente.addRow(['Dirección', 'Av. Principal 123']);
+            hojaCliente.addRow(['Teléfono', '123456789']);
+            hojaCliente.addRow(['Correo', 'juan.perez@correo.com']);
+
+            hojaCliente.getColumn(1).width = 15;
+            hojaCliente.getColumn(2).width = 30;
+
+            // Descargar archivo
+            const buffer = await workbook.xlsx.writeBuffer();
+            const blob = new Blob([buffer], { type: 'application/octet-stream' });
+            const url = URL.createObjectURL(blob);
+            const a = document.createElement('a');
+            a.href = url;
+            a.download = 'cotizacion_empresa.xlsx';
+            a.click();
+            URL.revokeObjectURL(url);
+        }
+    </script>
+</body>
+</html>
