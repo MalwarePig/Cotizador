@@ -1,0 +1,7 @@
+#btnScrollTop {
+    position: fixed;
+    bottom: 20px;
+    right: 10px;
+    display: none; /* Oculto por defecto */
+    z-index: 1000;
+  }

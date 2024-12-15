@@ -9,8 +9,7 @@
     </title>
     <meta name="description" content="">
     <meta name="viewport" content="width=device-width, initial-scale=1">
-    <link rel="stylesheet" href="css/index.css">
-    <link rel="stylesheet" href="css/style.css">
+    <link rel="stylesheet" href="css/index.css"> 
     <%- include ('partials/head.html') %>
     <!------incluir cabezera navegacion----->
     <link href='https://fonts.googleapis.com/css?family=Lato:400,300,700' rel='stylesheet' type='text/css'>
@@ -30,6 +29,32 @@
         </div>
         <br>
     </div>
+  <!-- Botón para alternar entre modo claro/oscuro -->
+<button id="toggleDarkMode" class="btn btn-secondary" >
+    Modo Oscuro
+  </button>
+
+  <script>
+    const toggleButton = document.getElementById('toggleDarkMode');
+  
+    // Cargar el estado del modo oscuro desde localStorage
+    if (localStorage.getItem('dark-mode') === 'enabled') {
+      document.body.classList.add('dark-mode');
+      toggleButton.textContent = 'Modo Claro';
+    }
+  
+    // Alternar entre los temas
+    toggleButton.addEventListener('click', () => {
+      document.body.classList.toggle('dark-mode');
+      if (document.body.classList.contains('dark-mode')) {
+        localStorage.setItem('dark-mode', 'enabled'); // Guardar preferencia
+        toggleButton.textContent = 'Modo Claro';
+      } else {
+        localStorage.setItem('dark-mode', 'disabled'); // Guardar preferencia
+        toggleButton.textContent = 'Modo Oscuro';
+      }
+    });
+  </script>
   
       
 

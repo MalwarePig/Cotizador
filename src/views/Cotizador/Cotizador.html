@@ -7,60 +7,73 @@
     <title>GlaDOS</title>
 
     <%- include ('../partials/head.html') %>
-        <!-- SheetJS -->
-        <script src="https://cdnjs.cloudflare.com/ajax/libs/xlsx/0.17.0/xlsx.full.min.js"></script>
+        <!-- ExcelJS -->
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/exceljs/4.3.0/exceljs.min.js"></script>
+        <script type="text/javascript" src="js/Cotizador/Cotizador.js"></script>
+       
+        
+        <!------ JQUERY PARA USAR AJAX ----->
+        <script src="https://code.jquery.com/jquery-3.3.1.min.js"
+            integrity="sha256-FgpCb/KJQlLNfOu91ta32o/NMZxltwRo8QtmkMRdAu8=" crossorigin="anonymous"></script>
+
 
 </head>
 
 <body>
     <%- include ('../partials/navigation.html') %>
+        <div class="container shadow-lg my-2 mx-auto p-3 bg-white rounded">
+            <div class="card border-0">
+                <div class="card-body">
+                    
+                    <div class="d-flex justify-content-center align-items-center">
+                        <h5 class="card-title">Nuevo</h5>
+                    </div>
 
-        <div class="container shadow-lg">
-            <div class="card">
-                <div class="card-body ">
                     <div class="form-inline col-12 ml-5" id="myform">
                         <!-- Información de cliente -->
                         <div class="row mb-3">
                             <div class="col-md-6">
                                 <label for="clientName" class="form-label">Nombre del Cliente</label>
                                 <input type="text" class="form-control" id="clientName" placeholder="Ingrese su nombre"
-                                    required>
+                                    required value="Sergio Magaña">
                             </div>
                             <div class="col-md-6">
                                 <label for="clientEmail" class="form-label">Correo Electrónico</label>
-                                <input type="email" class="form-control" id="clientEmail"
-                                    placeholder="Ingrese su correo electrónico" required>
+                                <input type="text" class="form-control" id="clientEmail"
+                                    placeholder="Ingrese su correo electrónico" required
+                                    value="Sergio_lcc92@hotmail.com">
                             </div>
                         </div>
 
-                        <!-- Detalles de la cotización -->
-                        <div class="mb-3">
-                            <label for="product" class="form-label">Producto o Servicio</label>
-                            <select class="form-select" id="product" required>
-                                <option value="">Seleccione un producto o servicio</option>
-                                <option value="producto1">Producto 1</option>
-                                <option value="producto2">Producto 2</option>
-                                <option value="producto3">Producto 3</option>
-                            </select>
-                        </div>
-
+                        <hr>
                         <div class="row mb-3">
-                            <div class="col-md-6">
+                            <!-- Detalles de la cotización -->
+                            <div class="col-md-4">
+                                <label for="product" class="form-label">Producto o Servicio</label>
+                                <select class="form-select" id="product" required>
+                                    <option value="">Seleccione un producto o servicio</option>
+                                    <option value="producto1" selected>Producto 1</option>
+                                    <option value="producto2">Producto 2</option>
+                                    <option value="producto3">Producto 3</option>
+                                </select>
+                            </div>
+                            <div class="col-md-4">
                                 <label for="quantity" class="form-label">Cantidad</label>
                                 <input type="number" class="form-control" id="quantity" placeholder="Cantidad" required
-                                    min="1">
+                                    min="1" value="12">
                             </div>
-                            <div class="col-md-6">
+                            <div class="col-md-4">
                                 <label for="unitPrice" class="form-label">Precio Unitario</label>
                                 <input type="number" class="form-control" id="unitPrice" placeholder="Precio por unidad"
-                                    required min="0" step="0.01">
+                                    required min="0" step="0.10" value="19.50">
                             </div>
                         </div>
+                        <hr>
 
                         <!-- Fecha estimada de entrega -->
                         <div class="mb-3">
                             <label for="deliveryDate" class="form-label">Fecha de Entrega Estimada</label>
-                            <input type="date" class="form-control" id="deliveryDate" required>
+                            <input type="date" class="form-control" id="deliveryDate" required value="2024-03-15">
                         </div>
 
                         <!-- Método de pago -->
@@ -69,7 +82,7 @@
                             <select class="form-select" id="paymentMethod" required>
                                 <option value="">Seleccione un método de pago</option>
                                 <option value="tarjeta">Tarjeta de Crédito/Débito</option>
-                                <option value="transferencia">Transferencia Bancaria</option>
+                                <option selected value="transferencia">Transferencia Bancaria</option>
                                 <option value="efectivo">Efectivo</option>
                             </select>
                         </div>
@@ -78,98 +91,80 @@
                         <div class="mb-3">
                             <label for="comments" class="form-label">Comentarios Adicionales</label>
                             <textarea class="form-control" id="comments" rows="3"
-                                placeholder="Comentarios adicionales o requisitos especiales"></textarea>
+                                placeholder="Comentarios adicionales o requisitos especiales">Lorem ipsum dolor sit amet consectetur adipisicing elit. Veniam magni qui adipisci, perspiciatis libero aut. Id recusandae, deserunt ducimus harum magnam neque provident quia nam dignissimos? Nisi, repudiandae iusto? Dolores!</textarea>
+                        </div>
+                        <!-- Comentarios adicionales -->
+                        <div class="mb-3">
+                            <label for="comments" class="form-label">Comentarios Adicionales</label>
+                            <textarea class="form-control" id="comments" rows="3"
+                                placeholder="Comentarios adicionales o requisitos especiales">Lorem ipsum dolor sit amet consectetur adipisicing elit. Veniam magni qui adipisci, perspiciatis libero aut. Id recusandae, deserunt ducimus harum magnam neque provident quia nam dignissimos? Nisi, repudiandae iusto? Dolores!</textarea>
+                        </div>
+                        <!-- Comentarios adicionales -->
+                        <div class="mb-3">
+                            <label for="comments" class="form-label">Comentarios Adicionales</label>
+                            <textarea class="form-control" id="comments" rows="3"
+                                placeholder="Comentarios adicionales o requisitos especiales">Lorem ipsum dolor sit amet consectetur adipisicing elit. Veniam magni qui adipisci, perspiciatis libero aut. Id recusandae, deserunt ducimus harum magnam neque provident quia nam dignissimos? Nisi, repudiandae iusto? Dolores!</textarea>
+                        </div>
+                        <!-- Comentarios adicionales -->
+                        <div class="mb-3">
+                            <label for="comments" class="form-label">Comentarios Adicionales</label>
+                            <textarea class="form-control" id="comments" rows="3"
+                                placeholder="Comentarios adicionales o requisitos especiales">Lorem ipsum dolor sit amet consectetur adipisicing elit. Veniam magni qui adipisci, perspiciatis libero aut. Id recusandae, deserunt ducimus harum magnam neque provident quia nam dignissimos? Nisi, repudiandae iusto? Dolores!</textarea>
+                        </div>
+                        <!-- Comentarios adicionales -->
+                        <div class="mb-3">
+                            <label for="comments" class="form-label">Comentarios Adicionales</label>
+                            <textarea class="form-control" id="comments" rows="3"
+                                placeholder="Comentarios adicionales o requisitos especiales">Lorem ipsum dolor sit amet consectetur adipisicing elit. Veniam magni qui adipisci, perspiciatis libero aut. Id recusandae, deserunt ducimus harum magnam neque provident quia nam dignissimos? Nisi, repudiandae iusto? Dolores!</textarea>
                         </div>
 
                         <!-- Botón de envío -->
-                        <button id="download-btn" class="btn btn-primary">Solicitar Cotización</button>
-
+                        <div class="d-flex justify-content-center align-items-center">
+                            <button id="download-btn" class="btn btn-primary" onclick="SetRegistro()">Generar
+                                Cotización</button>
+                        </div> 
+                        
                     </div>
                 </div>
             </div>
         </div>
 
+        <!-- Exito -->
+        <div class="modal fade" id="RecoleccionExito" tabindex="-1" role="dialog" aria-labelledby="RecoleccionExito"
+            aria-hidden="true">
+            <div class="modal-dialog" role="document">
+                <div class="modal-content">
+                    <div class="modal-body">
+                        Exito.
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cerrar</button>
+                    </div>
+                </div>
+            </div>
+        </div>
 
-        <script>
-            document.getElementById("download-btn").addEventListener("click", function() {
-      // Ruta de la imagen en la carpeta pública
-      const imgUrl = "images/logo.png";  // Ruta relativa a la imagen en la carpeta pública
+        <!-- Modal Sin elementos -->
+        <div class="modal fade" id="Vacio" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel"
+            aria-hidden="true">
+            <div class="modal-dialog" role="document">
+                <div class="modal-content">
+                    <div class="modal-body">
+                        No se encontraron elementos.
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cerrar</button>
+                    </div>
+                </div>
+            </div>
+        </div>
 
-      // Crear un objeto de imagen
-      const img = new Image();
-      img.src = imgUrl;
+<!-- Botón para subir al inicio -->
+<button id="btnScrollTop" class="btn btn-primary">
+    ↑
+</button>
 
-      img.onload = function() {
-        // Crear un canvas para convertir la imagen a base64
-        const canvas = document.createElement('canvas');
-        const ctx = canvas.getContext('2d');
-        canvas.width = img.width;
-        canvas.height = img.height;
-        ctx.drawImage(img, 0, 0);
-
-        // Obtener la imagen en formato base64
-        const base64Image = canvas.toDataURL("image/png").split(',')[1]; // Convertir a base64
-
-        // Datos de la cotización
-        const data = [
-          ["Producto", "Cantidad", "Precio Unitario", "Subtotal"],  // Encabezados
-          ["Producto 1", 2, 50, 100],
-          ["Producto 2", 5, 30, 150],
-          ["Producto 3", 3, 20, 60],
-        ];
-
-        // Crear la hoja de trabajo con los datos
-        const ws = XLSX.utils.aoa_to_sheet(data);
-
-        // Estilo para las celdas
-        const headerStyle = {
-          font: { bold: true, size: 12, color: { rgb: "FFFFFF" } },
-          fill: { fgColor: { rgb: "4CAF50" } },
-          alignment: { horizontal: "center", vertical: "center" },
-          border: { top: { style: "thin", color: { rgb: "000000" } },
-                    left: { style: "thin", color: { rgb: "000000" } },
-                    bottom: { style: "thin", color: { rgb: "000000" } },
-                    right: { style: "thin", color: { rgb: "000000" } } }
-        };
-
-        // Aplicar estilo al encabezado
-        for (let i = 0; i < data[0].length; i++) {
-          const cellAddress = { r: 0, c: i };
-          if (!ws[cellAddress]) ws[cellAddress] = {}; 
-          ws[cellAddress].s = headerStyle;
-        }
-
-        // Crear el objeto de la imagen para insertar en el Excel
-        const imageObj = {
-          name: "logo.png",  // Nombre del archivo de la imagen
-          data: base64Image, // Datos de la imagen en base64
-          opts: {
-            origin: { r: 0, c: 0 },  // Posición de la imagen en la celda A1
-            s: { r: 0, c: 0, row: 2, col: 2 }, // Tamaño de la imagen (puedes ajustarlo)
-          }
-        };
-
-        // Agregar la imagen al libro de trabajo
-        const wb = XLSX.utils.book_new();
-        XLSX.utils.book_append_sheet(wb, ws, "Cotización");
-
-        // Agregar la imagen en el archivo Excel
-        if (base64Image) {
-          if (!wb['!images']) wb['!images'] = [];  // Asegurarse de que exista el contenedor de imágenes
-          wb['!images'].push(imageObj);  // Insertar la imagen
-        }
-
-        // Generar y descargar el archivo Excel
-        XLSX.writeFile(wb, "cotizacion_con_imagen_publica.xlsx");
-      };
-
-      img.onerror = function() {
-        alert("Error al cargar la imagen. Asegúrate de que la ruta sea correcta.");
-      };
-    });
-                 
-        </script>
-
+<script type="text/javascript" src="js/Components/btnUp.js"></script>
 </body>
 
 </html>

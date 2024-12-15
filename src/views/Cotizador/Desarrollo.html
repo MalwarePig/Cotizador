@@ -4,8 +4,11 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    
     <title>Generar Cotización</title>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/exceljs/4.3.0/exceljs.min.js"></script>
+
+    <%- include ('../partials/head.html') %>
     <style>
         body {
             font-family: Arial, sans-serif;
@@ -35,6 +38,7 @@
 </head>
 
 <body>
+    <%- include ('../partials/navigation.html') %>
     <div style="text-align: center; margin-top: 20px;">
         <button onclick="crearCotizacionExcel()">
             Generar Cotización
@@ -61,94 +65,136 @@
             hojaCotizacion.properties.defaultRowHeight = 20;
 
             hojaCotizacion.addImage(logoId, {
-                tl: { col: 0, row: 0 },
-                ext: { width: 150, height: 150 }
+                tl: { col: 2, row: 0 },
+                ext: { width: 80, height: 80 }
             });
 
             // Título de la cotización
-            hojaCotizacion.mergeCells('A4:E4');
-            hojaCotizacion.getCell('A4').value = 'Título de Cotización';
-            hojaCotizacion.getCell('A4').alignment = { horizontal: 'center', vertical: 'middle' };//Formato de celda
-            hojaCotizacion.getCell('A4').font = { bold: true, size: 16 };//Formato de texto
-            hojaCotizacion.getCell('A4').fill = {
+            hojaCotizacion.mergeCells('G2:K2');
+            hojaCotizacion.getCell('G2').value = 'Título de Cotización';
+            hojaCotizacion.getCell('G2').alignment = { horizontal: 'center', vertical: 'middle', wrapText: true };//Formato de celda
+            hojaCotizacion.getCell('G2').font = { bold: true, size: 18 };//Formato de texto
+            hojaCotizacion.getCell('G2').fill = {
                 type: 'pattern',
                 pattern: 'solid',
                 fgColor: { argb: 'FF4CAF50' }
             };
 
-            // Encabezados de tabla [Label,data,ancho]
-            /*  hojaCotizacion.columns = [
-                 { header: '#', key: 'num', width: 5 },
-                 { header: 'Descripción', key: 'desc', width: 30 },
-                 { header: 'Cantidad', key: 'qty', width: 10 },
-                 { header: 'Precio Unitario', key: 'unitPrice', width: 15 },
-                 { header: 'Total', key: 'total', width: 15 }
-             ]; */
+            //Lorem ipsum
+            const Lorem = 'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Fusce sed justo in elit mollis hendrerit. Nulla facilisi. Curabitur nec mollis eros, in congue turpis. Nam rhoncus vitae ipsum et tristique. Praesent nec felis a nisi interdum luctus sit amet non nisi. Aenean placerat nulla sed lobortis rhoncus. Integer tempor dolor nec consequat molestie. Phasellus turpis massa, placerat ut nulla eu, placerat viverra nisi.'
+            hojaCotizacion.mergeCells('G4:K8');
+            hojaCotizacion.getCell('G4').value = Lorem;
+            hojaCotizacion.getCell('G4').alignment = { horizontal: 'center', vertical: 'middle', wrapText: true };//Formato de celda
+            hojaCotizacion.getCell('G4').border = {
+                top: { style: 'thin' },
+                left: { style: 'thin' },
+                bottom: { style: 'thin' },
+                right: { style: '' }
+            };
 
-            var idCol = hojaCotizacion.getCell('J6')
-            idCol.header = '#'
-            idCol.width = 5;
-            idCol.key = 'num'
+            /* ********************************************** */
+            // Agregar encabezados a partir de fila 5 y columna 7 (G5 a K5)
+            const encabezados = hojaCotizacion.getRow(10);
+            encabezados.getCell(7).value = '#';
+            encabezados.getCell(8).value = 'Descripción';
+            encabezados.getCell(9).value = 'Cantidad';
+            encabezados.getCell(10).value = 'Precio Unitario';
+            encabezados.getCell(11).value = 'Total';
 
-            console.log(idCol)
+            // Configurar ancho de las columnas necesarias
+            hojaCotizacion.getColumn(7).width = 5;  // Columna G
+            hojaCotizacion.getColumn(7).key = 'num';  // Columna G
+            hojaCotizacion.getColumn(8).width = 30; // Columna H
+            hojaCotizacion.getColumn(8).key = 'desc'; // Columna H
+            hojaCotizacion.getColumn(9).width = 10; // Columna I
+            hojaCotizacion.getColumn(9).key = 'Cantidad'; // Columna I
+            hojaCotizacion.getColumn(10).width = 15; // Columna J
+            hojaCotizacion.getColumn(10).key = 'unitPrice'; // Columna J
+            hojaCotizacion.getColumn(11).width = 15; // Columna K
+            hojaCotizacion.getColumn(11).key = 'total'; // Columna K
 
-            var desc = hojaCotizacion.getRow(4).getColumn(11);
-            desc.header = 'Descripción'
-            desc.width = 30;
-            desc.key = 'desc'
-            console.log(desc)
-
-            var qty = hojaCotizacion.getColumn(12);
-            qty.header = 'Cantidad'
-            qty.width = 10;
-            qty.key = 'qty'
-
-            var unitPrice = hojaCotizacion.getColumn(13);
-            unitPrice.header = 'Precio'
-            unitPrice.width = 15;
-            unitPrice.key = 'unitPrice'
-
-            var total = hojaCotizacion.getColumn(14);
-            total.header = 'Total'
-            total.width = 15;
-            total.key = 'total'
-
-            // Cambiar la posición de los encabezados a partir de la columna G
-           /*  const encabezados = hojaCotizacion.getRow(6); // Fila 6 para los encabezados
-            encabezados.getCell(11).value = '#';
-            encabezados.getCell(12).value = 'Descripción';
-            encabezados.getCell(13).value = 'Cantidad';
-            encabezados.getCell(14).value = 'Precio Unitario';
-            encabezados.getCell(15).value = 'Total';
- */
-            //Solo da formato de colores
-            /* encabezados.eachCell((cell, colNumber) => {
-                // Desplazamos las celdas de los encabezados a partir de la columna G (columna 7)
-                cell.col = colNumber + 6;
-                cell.font = { bold: true, color: { argb: 'FFFFFFFF' } };
-                cell.alignment = { horizontal: 'center' };
+            // Aplicar estilo a los encabezados
+            encabezados.eachCell({ includeEmpty: false }, (cell) => {
+                cell.font = { bold: true, color: { argb: 'FFFFFFFF' }, size: 12 };
+                cell.alignment = { horizontal: 'center', vertical: 'middle' };
                 cell.fill = {
                     type: 'pattern',
                     pattern: 'solid',
-                    fgColor: { argb: 'FF007BFF' }
+                    fgColor: { argb: 'FF007BFF' }, // Fondo azul
                 };
-            }); */
+                cell.border = {
+                    top: { style: 'thin' },
+                    left: { style: 'thin' },
+                    bottom: { style: 'thin' },
+                    right: { style: 'thin' }
+                };
+            });
 
-            // Datos de la tabla
+            // Agregar datos debajo de los encabezados
             const datos = [
                 { num: 1, desc: 'Producto A', qty: 2, unitPrice: 50, total: 100 },
                 { num: 2, desc: 'Producto B', qty: 1, unitPrice: 75, total: 75 },
-                { num: 3, desc: 'Producto C', qty: 3, unitPrice: 20, total: 60 }
+                { num: 3, desc: 'Producto C', qty: 3, unitPrice: 20, total: 60 },
             ];
+
             hojaCotizacion.addRows(datos);
+            // Aplicar formato numérico a las columnas de precios y totales
+            hojaCotizacion.getColumn(10).numFmt = '"$"#,##0.00';
+            hojaCotizacion.getColumn(11).numFmt = '"$"#,##0.00';
 
+            /* ********************************************** */
             // Subtotales y totales
-            hojaCotizacion.addRow(['', '', '', 'Subtotal', 235]);
-            hojaCotizacion.addRow(['', '', '', 'IVA (16%)', 37.6]);
-            hojaCotizacion.addRow(['', '', '', 'Total', 272.6]);
+            // Agregar datos debajo de los encabezados
+            const Totales = [
+                { unitPrice: 'Subtotal', total: 235 },
+                { unitPrice: 'IVA (16%)', total: 37.6 },
+                { unitPrice: 'Total', total: 272.6 },
+            ];
 
-            hojaCotizacion.getColumn(5).numFmt = '"$"#,##0.00';
+            hojaCotizacion.addRows(Totales);
 
+            //Obtener la ultima fila con un dato
+            const ultimaFila = hojaCotizacion.lastRow.number;
+            console.log(`La última fila con datos es: ${ultimaFila}`);
+            // Agregar encabezados a partir de la ultima fila mas 5 filas de espacio hacia abajo
+            const encabezadosDos = hojaCotizacion.getRow(ultimaFila + 5);
+            encabezadosDos.getCell(9).value = 'Nomina';
+            encabezadosDos.getCell(10).value = 'Nombre';
+            encabezadosDos.getCell(11).value = 'Puesto';
+
+            // Configurar ancho de las columnas necesarias
+            hojaCotizacion.getColumn(9).key = 'nom'; // Columna I
+            hojaCotizacion.getColumn(10).key = 'name'; // Columna J
+            hojaCotizacion.getColumn(11).key = 'area'; // Columna K
+
+            // Aplicar estilo a los encabezados
+            encabezadosDos.eachCell({ includeEmpty: false }, (cell) => {
+                cell.font = { bold: true, color: { argb: 'FFFFFFFF' }, size: 12 };
+                cell.alignment = { horizontal: 'center', vertical: 'middle' };
+                cell.fill = {
+                    type: 'pattern',
+                    pattern: 'solid',
+                    fgColor: { argb: '#aab7f4' }, // Fondo azul
+                };
+            });
+
+            const Data = [
+                { nom: '557', name: 'Sergio Osvaldo', area: 'Gerente' },
+                { nom: '558', name: 'Juan Carlos', area: 'Mantenimiento' },
+                { nom: '559', name: 'Valeria Lopez', area: 'Nominas' },
+            ];
+
+            hojaCotizacion.addRows(Data);
+            const dataDos = hojaCotizacion.getRow(22);
+            // Aplicar estilo a los encabezados
+            dataDos.eachCell({ includeEmpty: false }, (cell) => { 
+                cell.alignment = { horizontal: 'center', vertical: 'middle' };
+            });
+            SegundaHoja(workbook)
+        }
+
+
+        async function SegundaHoja(workbook) {
             // Hoja 2: Datos del Cliente
             const hojaCliente = workbook.addWorksheet('Datos del Cliente');
             hojaCliente.addRow(['Datos del Cliente']);

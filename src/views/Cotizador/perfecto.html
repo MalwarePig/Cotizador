@@ -1,5 +1,6 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -16,6 +17,7 @@
             height: 100vh;
             background-color: #f4f4f4;
         }
+
         button {
             padding: 10px 20px;
             font-size: 16px;
@@ -25,11 +27,13 @@
             border-radius: 5px;
             cursor: pointer;
         }
+
         button:hover {
             background-color: #45a049;
         }
     </style>
 </head>
+
 <body>
     <div style="text-align: center; margin-top: 20px;">
         <button onclick="crearCotizacionExcel()">
@@ -41,42 +45,86 @@
         async function crearCotizacionExcel() {
             const workbook = new ExcelJS.Workbook();
 
+            // Cargar imagen del logo
+            const response = await fetch('images/logo.png'); // Ruta a la imagen en carpeta pública
+            const imageBlob = await response.blob();
+            const arrayBuffer = await imageBlob.arrayBuffer();
+
+            // Agregar imagen al libro de Excel
+            const logoId = workbook.addImage({
+                buffer: arrayBuffer,
+                extension: 'png'
+            });
+
             // Hoja 1: Cotización
             const hojaCotizacion = workbook.addWorksheet('Cotización');
             hojaCotizacion.properties.defaultRowHeight = 20;
 
-            // Agregar logo (Base64)
-            const logoBase64 = 'data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAA...'; // Sustituye con tu Base64
-            const logoId = workbook.addImage({
-                base64: logoBase64,
-                extension: 'png'
-            });
             hojaCotizacion.addImage(logoId, {
                 tl: { col: 0, row: 0 },
-                ext: { width: 150, height: 70 }
+                ext: { width: 150, height: 150 }
             });
 
             // Título de la cotización
             hojaCotizacion.mergeCells('A4:E4');
             hojaCotizacion.getCell('A4').value = 'Título de Cotización';
-            hojaCotizacion.getCell('A4').alignment = { horizontal: 'center', vertical: 'middle' };
-            hojaCotizacion.getCell('A4').font = { bold: true, size: 16 };
+            hojaCotizacion.getCell('A4').alignment = { horizontal: 'center', vertical: 'middle' };//Formato de celda
+            hojaCotizacion.getCell('A4').font = { bold: true, size: 16 };//Formato de texto
             hojaCotizacion.getCell('A4').fill = {
                 type: 'pattern',
                 pattern: 'solid',
                 fgColor: { argb: 'FF4CAF50' }
             };
 
-            // Encabezados de tabla
-            hojaCotizacion.columns = [
-                { header: '#', key: 'num', width: 5 },
-                { header: 'Descripción', key: 'desc', width: 30 },
-                { header: 'Cantidad', key: 'qty', width: 10 },
-                { header: 'Precio Unitario', key: 'unitPrice', width: 15 },
-                { header: 'Total', key: 'total', width: 15 }
-            ];
+            // Encabezados de tabla [Label,data,ancho]
+            /*  hojaCotizacion.columns = [
+                 { header: '#', key: 'num', width: 5 },
+                 { header: 'Descripción', key: 'desc', width: 30 },
+                 { header: 'Cantidad', key: 'qty', width: 10 },
+                 { header: 'Precio Unitario', key: 'unitPrice', width: 15 },
+                 { header: 'Total', key: 'total', width: 15 }
+             ]; */
 
-            hojaCotizacion.getRow(6).eachCell(cell => {
+            var idCol = hojaCotizacion.getColumn(10);
+            idCol.header = '#'
+            idCol.width = 5;
+            idCol.key = 'num'
+
+            console.log(idCol)
+
+            var desc = hojaCotizacion.getColumn(11);
+            desc.header = 'Descripción'
+            desc.width = 30;
+            desc.key = 'desc'
+            console.log(desc)
+
+            var qty = hojaCotizacion.getColumn(12);
+            qty.header = 'Cantidad'
+            qty.width = 10;
+            qty.key = 'qty'
+
+            var unitPrice = hojaCotizacion.getColumn(13);
+            unitPrice.header = 'Precio'
+            unitPrice.width = 15;
+            unitPrice.key = 'unitPrice'
+
+            var total = hojaCotizacion.getColumn(14);
+            total.header = 'Total'
+            total.width = 15;
+            total.key = 'total'
+
+            // Cambiar la posición de los encabezados a partir de la columna G
+           /*  const encabezados = hojaCotizacion.getRow(6); // Fila 6 para los encabezados
+            encabezados.getCell(11).value = '#';
+            encabezados.getCell(12).value = 'Descripción';
+            encabezados.getCell(13).value = 'Cantidad';
+            encabezados.getCell(14).value = 'Precio Unitario';
+            encabezados.getCell(15).value = 'Total';
+ */
+            //Solo da formato de colores
+            /* encabezados.eachCell((cell, colNumber) => {
+                // Desplazamos las celdas de los encabezados a partir de la columna G (columna 7)
+                cell.col = colNumber + 6;
                 cell.font = { bold: true, color: { argb: 'FFFFFFFF' } };
                 cell.alignment = { horizontal: 'center' };
                 cell.fill = {
@@ -84,7 +132,7 @@
                     pattern: 'solid',
                     fgColor: { argb: 'FF007BFF' }
                 };
-            });
+            }); */
 
             // Datos de la tabla
             const datos = [
@@ -124,4 +172,5 @@
         }
     </script>
 </body>
+
 </html>

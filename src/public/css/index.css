@@ -18,3 +18,26 @@ body::before {
     z-index: -1;
 }
 
+/* index.css o style.css */
+
+/* Tema claro (por defecto) */
+:root {
+  --background-color: #ffffff;
+  --text-color: #000000;
+}
+
+/* Tema oscuro */
+.dark-mode {
+  --background-color: #121212;
+  --text-color: #ffffff;
+}
+
+/* Aplicar las variables a los elementos */
+body {
+  background-color: var(--background-color);
+  color: var(--text-color);
+}
+
+.bg-light {
+  background-color: var(--background-color) !important;
+}

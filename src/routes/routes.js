@@ -1,6 +1,6 @@
 const express = require('express'); //guardar express en una variable de servidor
-const router = express.Router(); //usar modulo de router de ex´press
-
+const router = express.Router(); //usar modulo de router de express
+const bdController = require('../controller/bdController');
 
 //Acceder a login
 var reinicio = router.get('/', (req, res) => {
@@ -18,9 +18,18 @@ var reinicio = router.get('/Nuevo', (req, res) => {
 	res.render('./Cotizador/Cotizador.html');
 });
 
-var reinicio = router.get('/Pruebas', (req, res) => {
+var reinicio = router.get('/Historial', (req, res) => {
 	//res.send('holoo');
-	res.render('./Cotizador/Desarrollo.html');
+	res.render('./Historial/Historial.html');
 });
+
+//Consulta
+router.get('/BuscarHis/', bdController.list);
+//Insert
+router.post('/SetRegistro', bdController.SetRegistro);
+//Consulta
+router.get('/Delete/', bdController.Delete);
+
+
 
 module.exports = router;

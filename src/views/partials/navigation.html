@@ -1,27 +1,71 @@
+<nav class="navbar navbar-expand-lg navbar-light bg-body-tertiary shadow-sm rounded sticky-top">
+  <div class="container-fluid">
+    <!-- Botón Hamburguesa -->
+    <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav"
+      aria-controls="navbarNav" aria-expanded="false" aria-label="Alternar Navegación">
+      <span class="navbar-toggler-icon"></span>
+    </button>
 
-<!--   -->
-<nav>
-  <ul class="nav nav-tabs shadow-sm p-3 mb-4 bg-body-tertiary rounded">
-    <li class="nav-item">
-      <a class="nav-link active" href="/home"><i class="fas fa-home"></i> Inicio</a>
-    </li> 
+    <!-- Enlaces de Navegación -->
+    <div class="collapse navbar-collapse mt-1" id="navbarNav">
+      <ul class="nav nav-tabs w-100">
+        <!-- Inicio -->
+        <li class="nav-item">
+          <a class="nav-link active" href="/home" aria-current="page">
+            <i class="fas fa-home" aria-hidden="true"></i> 
+            <span class="d-none d-md-inline">Inicio</span>
+          </a>
+        </li>
 
-    <li class="nav-item">
-      <a class="nav-link" href="/Nuevo" tabindex="-1" aria-disabled="true"><i class="fas fa-laptop-code"></i>
-        Nuevo</a>
-    </li>
+        <!-- Nuevo -->
+        <li class="nav-item">
+          <a class="nav-link " href="/Nuevo" tabindex="-1" aria-disabled="true">
+            <i class="fa-solid fa-file-circle-plus"></i>
+            <span class="d-none d-md-inline">Nuevo</span>
+          </a>
+        </li>
 
-    <li class="nav-item">
-      <a class="nav-link" href="/Pruebas" tabindex="-1" aria-disabled="true"><i class="fa-solid fa-key"></i>
-        Historial</a>
-    </li>
- 
-    
-    <li class="nav-item">
-      <a class="nav-link " href="/" tabindex="-1" aria-disabled="true"><i class="fas fa-sign-out-alt"></i> Salir</a>
-    </li>
-  
-  </ul>
+        <!-- Historial -->
+        <li class="nav-item">
+          <a class="nav-link" href="/Historial">
+            <i class="fa-solid fa-clock-rotate-left"></i>
+            <span class="d-none d-md-inline">Historial</span>
+          </a>
+        </li>
+
+        <!-- Salir -->
+        <li class="nav-item">
+          <a class="nav-link" href="/">
+            <i class="fas fa-sign-out-alt" aria-hidden="true"></i> 
+            <span class="d-none d-md-inline">Salir</span>
+          </a>
+        </li>
+
+      </ul>
+    </div>
+  </div>
 </nav>
 
+<script>
   
+  document.addEventListener('DOMContentLoaded', () => {
+    // Obtener la URL actual
+    const currentPath = window.location.pathname;
+
+    // Buscar todos los enlaces en la barra de navegación
+    document.querySelectorAll('.nav-link').forEach(link => {
+        // Verificar si el href del enlace coincide con la URL actual
+        if (link.getAttribute('href') === currentPath) {
+            // Remover la clase "active" de cualquier enlace previo
+            document.querySelectorAll('.nav-link.active').forEach(activeLink => {
+                activeLink.classList.remove('active');
+            });
+
+            // Agregar la clase "active" al enlace correspondiente
+            link.classList.add('active');
+        }
+    });
+});
+
+
+</script>
